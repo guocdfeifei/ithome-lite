@@ -22,9 +22,10 @@ export function formatTime (date) {
 }
 
 export function formatSlideList (slide) {
-  const title = slide.title['#text']
-  const image = slide.image['#text']
-  const link = slide.link['#text']
+  const title = slide.title
+  const image = `https://p1.pstatp.com/large/b71f000518565f234cd6`
+  const link = slide.id
+  // const id = slide.id
   return {
     title,
     image,
@@ -33,15 +34,15 @@ export function formatSlideList (slide) {
 }
 
 export function formatNewsList (news) {
-  const { newsid, title, postdate, commentcount, lapinid, image } = news
+  // const { newsid, title, postdate, commentcount, lapinid, image } = news
   return {
-    id: newsid,
-    title,
-    postdate: formatTime(postdate),
-    commentcount,
-    lapinid,
-    image,
-    link: `/pages/detail/news?id=${newsid}&title=${title}`
+    id: news.id,
+    title: news.title,
+    pub_time: news.pub_time,
+    comment_count: news.comment_count,
+    lapinid: '',
+    image: `https://p1.pstatp.com/large/b71f000518565f234cd6`,
+    link: `/pages/detail/news?id=${news.id}&title=${news.title}`
   }
 }
 

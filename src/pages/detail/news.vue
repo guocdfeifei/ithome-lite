@@ -13,9 +13,10 @@
 </template>
 
 <script>
-import xml2json from 'xmlstring2json'
+// import xml2json from 'xmlstring2json'
 import api from '@/utils/api'
 import newsItem from '@/components/news-item'
+import marked from 'marked'
 
 export default {
   components: {
@@ -30,11 +31,13 @@ export default {
     }
   },
   async mounted () {
-    this.id = this.$route.query.id
-    this.title = this.$route.query.title
+    console.log('aaaaa')
+    console.log(this.$mp.query)
+    this.id = this.$mp.query.id
+    this.title = this.$mp.query.title
     await Promise.all([
-      this.getNews(),
-      this.getRelatedNews()
+      this.getNews()
+      // ,this.getRelatedNews()
     ])
   },
   methods: {
@@ -45,14 +48,14 @@ export default {
     },
     async getNews () {
       let { id } = this
-      id = `${id.slice(0, 3)}/${id.slice(3, 6)}`
+      id = `${id}`
       const news = await api.getNews(id)
       if (!news) return
-      const parsedNews = xml2json(news).rss.channel.item
+      // const parsedNews = xml2json(news).rss.channel.item
       this.news = {
-        newssource: parsedNews.newssource['#text'],
-        detail: parsedNews.detail['#text'].replace(/<img/g, '<img width="100%"'),
-        newsauthor: parsedNews.newsauthor['#text']
+        newssource: news.author,
+        detail: marked(news.body, { sanitize: true }),
+        newsauthor: news.pub_time
       }
     },
     async getRelatedNews () {

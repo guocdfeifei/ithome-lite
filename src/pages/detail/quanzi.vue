@@ -41,20 +41,20 @@ export default {
   },
   methods: {
     async getTopic () {
-      const { query } = this.$route
+      const { query } = this.$mp
       const topic = await api.getTopic(query.id)
       if (!topic) return
-      topic.content = topic.content.replace('!--IMG_1--', `img src="${topic.imgs[0]}" width="100%" /`)
-      topic.reply = topic.reply.map(formatComment)
+      topic.content = topic.body
+      // topic.reply = topic.reply.map(formatComment)
       this.topic = Object.assign({
         title: query.title,
-        vc: query.vc
+        vc: topic.views
       }, topic)
     },
     async getComments (loaded) {
       if (this.loading) return
       this.loading = true
-      const { query } = this.$route
+      const { query } = this.$mp
       const comments = this.topic.reply
       const lastComment = comments[comments.length - 1]
       const newComments = await api.getTopicComments(query.id, lastComment.id)

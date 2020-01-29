@@ -1,23 +1,23 @@
 <template lang="pug">
 .container
   swiper.slider-wrap(
-    v-if="slides.length",
+    v-if="slides.count",
     autoPlay,
     indicator-dots,
     circular,
     indicator-color="rgba(255, 255, 255, .3)",
     indicator-active-color="rgba(210, 34, 34, .7)")
     swiper-item(
-      v-for="(slide, index) of slides",
+      v-for="(slide, index) of slides.results",
       :key="index")
       .slider-item(@click="() => turn(slide.link)")
         .slider-title {{slide.title}}
-        img.slider-img(:src="slide.image", mode="aspectFill")
+        img.slider-img(:src="slide.image", mode="idaspectFill")
   .news-wrap
     news-item(
       v-for="item of news",
       :news="item"
-      :key="item.newsid")
+      :key="item.id")
   .nomore 只给看这么多
 </template>
 
@@ -51,6 +51,8 @@ export default {
       'getNewsList'
     ]),
     turn (url) {
+      console.log(url)
+
       uni.navigateTo({ url })
     }
   }

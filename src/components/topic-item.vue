@@ -2,16 +2,16 @@
 .topic-item(@click="turn")
   img.topic-headimg(src="/static/assets/avatar_default.png")
   img.topic-headimg(:src="topic.author.headimg")
-  .topic-title {{topic.tag}} {{topic.title}}
+  .topic-title {{topic.mytags}} {{topic.title}}
   .topic-info
-    .topic-info-item {{topic.author.nickname}}
-    .topic-info-item {{topic.type}}
+    .topic-info-item {{topic.author}}
+    .topic-info-item {{topic.category}}
     .topic-info-item
       img.topic-info-icon(src="/static/assets/quan_hit.png")
-      span.topic-info-text {{topic.viewcount}}
+      span.topic-info-text {{topic.views}}
     .topic-info-item
       img.topic-info-icon(src="/static/assets/quan_comment.png")
-      span.topic-info-text {{topic.replycount}}
+      span.topic-info-text {{topic.comment_count}}
 </template>
 
 <script>

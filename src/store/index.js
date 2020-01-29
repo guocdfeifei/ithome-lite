@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import xml2json from 'xmlstring2json'
-import { formatSlideList, formatNewsList, formatTopicList } from '@/utils'
+// import xml2json from 'xmlstring2json' formatSlideList, , formatTopicList
+import { formatNewsList, formatSlideList } from '@/utils'
 import api from '@/utils/api'
 
 Vue.use(Vuex)
@@ -27,17 +27,26 @@ const store = new Vuex.Store({
     async getSlides ({ commit }) {
       const slides = await api.getSlides()
       if (!slides) return
-      const parsedSlides = xml2json(slides).rss.channel.item
-      const filtedSlides = parsedSlides.filter(
-        slide => slide.opentype['#text'] === '1'
-      )
-      const formatedSlides = filtedSlides.map(formatSlideList)
+      // const parsedSlides = xml2json(slides).rss.channel.item
+      // const filtedSlides = parsedSlides.filter(
+      //   slide => slide.opentype['#text'] === '1'
+      // )
+      // console.log('slides1111')
+      // console.log(slides)
+      const rests = slides.results.map(formatSlideList)
+      // console.log('slides1111')
+      // const rests = formatedSlides
+      const formatedSlides = {}
+      formatedSlides.count = slides.count
+      formatedSlides.results = rests
+      // console.log(formatedSlides)
       commit('slides', formatedSlides)
+      // commit('slides', slides)
     },
     async getNewsList ({ state, commit }, init) {
       const news = await api.getNewsList()
       if (!news) return
-      const formatedNews = news.newslist.map(formatNewsList)
+      const formatedNews = news.results.map(formatNewsList)
       if (init) {
         commit('news', formatedNews)
       } else {
@@ -52,11 +61,11 @@ const store = new Vuex.Store({
       }
       const topics = await api.getTopics(replytime)
       if (!topics) return
-      const formatedTopics = topics.map(formatTopicList)
+      // const formatedTopics = topics.map(formatTopicList)
       if (init) {
-        commit('topics', formatedTopics)
+        commit('topics', topics)
       } else {
-        commit('topics', state.topics.concat(formatedTopics))
+        commit('topics', state.topics.concat(topics))
       }
     }
   }
